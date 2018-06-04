@@ -1,0 +1,20 @@
+{
+  "name": "custom-order-form",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "source local/setEnv.sh && nodemon index.js"
+  },
+  "author": "Tim Smith",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "lognext": "0.0.4",
+    "npm": "^6.1.0",
+    "sparkpost": "^2.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
