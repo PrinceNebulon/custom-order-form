@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "source local/setEnv.sh && nodemon index.js"
+    "dev": "source local/setEnv.sh && nodemon index.js",
+    "start": "node index.js"
   },
   "author": "Tim Smith",
   "license": "MIT",
