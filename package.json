@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "source local/setEnv.sh && nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "heroku": "git add -A && git commit -m \"committing changes\" && git push heroku master"
   },
   "author": "Tim Smith",
   "license": "MIT",
