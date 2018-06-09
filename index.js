@@ -7,7 +7,7 @@ const phone = require('phone');
 
 const PORT = process.env.PORT || 8080;
 const EMAIL_USER = process.env.EMAIL_USER;
-// const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+console.log(`EMAIL_USER=${EMAIL_USER}`);
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const transporter = nodemailer.createTransport({
@@ -134,13 +134,12 @@ app.post('/api/orders', (req, res) => {
 		transporter.sendMail(mailOptions)
 			.then((info) => {
 				console.log(info);
+				res.sendStatus(200);
 			})
 			.catch((err) => {
 				console.log(err);
+				res.sendStatus(500);
 			});
-
-		// Respond to website
-		res.sendStatus(200);
 	} catch(err) {
 		console.log(err);
 		res.sendStatus(500);
