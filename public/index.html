@@ -22,6 +22,63 @@
 		  background-color: #f5f5f5;
 		}
 	</style>
+
+	<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+$(document).ready(() => {
+	$('#form-submit').click((event) => {
+		event.preventDefault();
+		$('#messages').html('');
+
+		const body = {
+			name: $('#form-name').val(),
+			phone: $('#form-phone').val(),
+			email: $('#form-email').val(),
+			preferredContactMethod: $('#form-preferred-contact-email').is(':checked') 
+				? 'email' 
+				: $('#form-preferred-contact-sms').is(':checked')
+					? 'sms'
+					: $('#form-preferred-contact-call').is(':checked')
+						? 'call'
+						: undefined,
+			order: {
+				unpapertowel: $('#form-order-unpapertowel').val(),
+				snackLarge: $('#form-order-snack-large').val(),
+				snackSmall: $('#form-order-snack-small').val(),
+				sandwhichWrap: $('#form-order-sandwhich-wrap').val(),
+				zipperBag: $('#form-order-zipper-bag').val(),
+				fabric: $('#form-order-fabric').val()
+			}
+		};
+
+		$('#form-submit').prop('disabled', true);
+		$.post({
+			url: '/api/orders',
+			data: JSON.stringify(body),
+			contentType: 'application/json'
+		})
+			.then((res) => {
+				console.log('email success');
+				window.location.href = '/thanks.html';
+			})
+			.catch((err) => {
+				console.error(err);
+				if (err.responseJSON && err.responseJSON.validationErrors) {
+					let text = $('<div>').addClass('alert alert-danger');
+					err.responseJSON.validationErrors.forEach((msg) => text.append($('<p>').text(msg)));
+					$('#messages').html(text);
+				} else {
+					$('#messages').html('<div class="alert alert-danger">There was an unknown error processing your request. Please message us on Facebook at <a href="https://www.facebook.com/TheUnpaperedHome/">https://www.facebook.com/TheUnpaperedHome/</a> or send an email to <a href="mailto:TheUnpaperedHome@gmail.com">TheUnpaperedHome@gmail.com</a> to complete your order</div>');
+				}
+				$('#form-submit').prop('disabled', false);
+			});
+	});
+});
+  </script>
 </head>
 <body>
 
@@ -69,35 +126,35 @@
 
 				<h2>Custom Order</h2>
 				<div class="form-group">
-					<label for="form-" class="mr-3">Unpaper Towel Roll</label>
+					<label for="form-order-unpapertowel" class="mr-3">Unpaper Towel Roll</label>
 					<small id="emailHelp" class="form-text text-muted mr-3">X towels, 9.5"x10.5", $44</small>
-					<input type="number" class="form-control" id="form-" aria-describedby="emailHelp" value="0">
+					<input type="number" class="form-control" id="form-order-unpapertowel" aria-describedby="emailHelp" value="0">
 				</div>
 				<div class="form-group">
-					<label for="form-" class="mr-3">Snack Bag - Large</label>
-					<small id="form--help" class="form-text text-muted mr-3">W"xH", $6</small>
-					<input type="number" class="form-control" id="form-" aria-describedby="form--help" value="0">
+					<label for="form-order-snack-large" class="mr-3">Snack Bag - Large</label>
+					<small class="form-text text-muted mr-3">W"xH", $6</small>
+					<input type="number" class="form-control" id="form-order-snack-large" aria-describedby="form--help" value="0">
 				</div>
 				<div class="form-group">
-					<label for="form-" class="mr-3">Snack Bag - Small</label>
-					<small id="form--help" class="form-text text-muted mr-3">W"xH", $5</small>
-					<input type="number" class="form-control" id="form-" aria-describedby="form--help" value="0">
+					<label for="form-order-snack-small" class="mr-3">Snack Bag - Small</label>
+					<small class="form-text text-muted mr-3">W"xH", $5</small>
+					<input type="number" class="form-control" id="form-order-snack-small" aria-describedby="form--help" value="0">
 				</div>
 				<div class="form-group">
-					<label for="form-" class="mr-3">Sandwhich Wrap</label>
-					<small id="form--help" class="form-text text-muted mr-3">12.5"x12.5", $6</small>
-					<input type="number" class="form-control" id="form-" aria-describedby="form--help" value="0">
+					<label for="form-order-sandwhich-wrap" class="mr-3">Sandwhich Wrap</label>
+					<small class="form-text text-muted mr-3">12.5"x12.5", $6</small>
+					<input type="number" class="form-control" id="form-order-sandwhich-wrap" aria-describedby="form--help" value="0">
 				</div>
 				<div class="form-group">
-					<label for="form-" class="mr-3">Zipper Bag</label>
-					<small id="form--help" class="form-text text-muted mr-3">W"xH", $5-11</small>
-					<input type="number" class="form-control" id="form-" aria-describedby="form--help" value="0">
+					<label for="form-order-zipper-bag" class="mr-3">Zipper Bag</label>
+					<small class="form-text text-muted mr-3">W"xH", $5-11</small>
+					<input type="number" class="form-control" id="form-order-zipper-bag" aria-describedby="form--help" value="0">
 				</div>
 
 				<div class="form-group">
-					<label for="form-fabric">Fabric Choices</label>
+					<label for="form-order-fabric">Fabric Choices</label>
 					<small id="form-fabric-help" class="form-text text-muted">Describe the fabric you want for each item. Please include fabric direction and size if not a standard item. Some fabrics may incur additional cost.</small>
-					<textarea class="form-control" id="form-fabric" rows="3" placeholder="Describe the fabric you want for each item. Please include fabric direction and size if not a standard item. Some fabrics may incur additional cost." aria-describedby="form-fabric-help"></textarea>
+					<textarea class="form-control" id="form-order-fabric" rows="3" placeholder="Describe the fabric you want for each item. Please include fabric direction and size if not a standard item. Some fabrics may incur additional cost." aria-describedby="form-fabric-help"></textarea>
 				</div>
 
 				<div class="form-group">
@@ -105,7 +162,9 @@
 					<p>Payment will be arranged after the custom order is accepted.</p>
 				</div>
 
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<div id="messages"></div>
+
+				<button type="submit" class="btn btn-primary" id="form-submit">Submit</button>
 				<!-- /Order Form -->
 			</form>
 		</div>
