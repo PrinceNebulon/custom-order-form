@@ -7,7 +7,6 @@ const phone = require('phone');
 
 const PORT = process.env.PORT || 8080;
 const EMAIL_USER = process.env.EMAIL_USER;
-console.log(`EMAIL_USER=${EMAIL_USER}`);
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const transporter = nodemailer.createTransport({
@@ -87,7 +86,6 @@ app.post('/api/orders', (req, res) => {
 			} else {
 				req.body.order.zipperBag = 0;
 			}
-			console.log(req.body);
 
 			if (!hasOrder) validationErrors.push('You forgot to order something!');
 		}
@@ -133,15 +131,14 @@ app.post('/api/orders', (req, res) => {
 		};
 		transporter.sendMail(mailOptions)
 			.then((info) => {
-				console.log(info);
 				res.sendStatus(200);
 			})
 			.catch((err) => {
-				console.log(err);
+				log.error(err);
 				res.sendStatus(500);
 			});
 	} catch(err) {
-		console.log(err);
+		log.error(err);
 		res.sendStatus(500);
 	}
 });
